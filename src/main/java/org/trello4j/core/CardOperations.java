@@ -41,13 +41,15 @@ public interface CardOperations {
 
 	Checklist addChecklist(String idChecklist, String checklistName, String idChecklistSource, String... filter);
 
-	List<Card.Label> addLabel(String label, String... filter);
+	boolean addLabel(String label);
 
-	List<Member> addMember(String memberId, String... filter);
+	boolean addMember(String memberId, String... filter);
 
 	boolean vote(String memberId, String... filter);
 
 	List<Member> getMemberVotes(String... filter);
+	
+	boolean changeList(String idList);
 
 	/**
 	 * Archives the card.
