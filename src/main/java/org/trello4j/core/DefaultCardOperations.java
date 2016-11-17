@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.FileSystemResource;
@@ -132,21 +133,18 @@ public class DefaultCardOperations extends AbstractOperations implements CardOpe
 	}
 
 	@Override
-	public List<Label> addLabel(String label, String... filters) {
-		Map<String, String> keyValueMap = Collections.singletonMap("value", label);
-		TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_POST_LABELS, cardId).filter(filters);
-		ParameterizedTypeReference<List<Label>> typeReference = new ParameterizedTypeReference<List<Label>>() {
-		};
-		return getTrelloAccessor().doPost(uri.build(), keyValueMap, typeReference);
+	public boolean addLabel(String idLabel) {
+		Map<String, String> arguments = Collections.singletonMap("value", idLabel);
+		TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_POST_LABELS, cardId);
+		return getTrelloAccessor().doPost(uri.build(), arguments);
 	}
 
 	@Override
-	public List<Member> addMember(String memberId, String... filters) {
-		Map<String, String> keyValueMap = Collections.singletonMap("value", memberId);
-		TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_POST_ADD_MEMBER, cardId).filter(filters);
-		ParameterizedTypeReference<List<Member>> typeReference = new ParameterizedTypeReference<List<Member>>() {
-		};
-		return getTrelloAccessor().doPost(uri.build(), keyValueMap, typeReference);
+	public boolean addMember(String memberId, String... filters) {
+		Map<String, String> arguments = Collections.singletonMap("value", memberId);
+		TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_POST_ADD_MEMBER, cardId);
+		List<Member> members = getMembers();
+		return getTrelloAccessor().doPost(uri.build(), arguments);
 	}
 
 	@Override
@@ -199,5 +197,12 @@ public class DefaultCardOperations extends AbstractOperations implements CardOpe
 	public boolean deleteVote(String memberId, String... filters) {
 		TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_DELETE_VOTE_MEMBER, cardId, memberId).filter(filters);
 		return getTrelloAccessor().doDelete(uri.build());
+	}
+
+	@Override
+	public boolean changeList(String idList) {
+		Map<String, String> arguments = Collections.singletonMap("value", idList);
+		TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_PUT_CHANGELIST, cardId);
+		return getTrelloAccessor().doPut(uri.build(), arguments);
 	}
 }

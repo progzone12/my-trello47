@@ -46,8 +46,8 @@ public class TrelloURI {
 	public static final String CARD_POST_COMMENTS = "https://api.trello.com/1/cards/{0}/actions/comments";
 	public static final String CARD_POST_ATTACHMENTS = "https://api.trello.com/1/cards/{0}/attachments";
 	public static final String CARD_POST_CHECKLISTS = "https://api.trello.com/1/cards/{0}/checklists";
-	public static final String CARD_POST_LABELS = "https://api.trello.com/1/cards/{0}/labels";
-	public static final String CARD_POST_ADD_MEMBER = "https://api.trello.com/1/cards/{0}/members";
+	public static final String CARD_POST_LABELS = "https://api.trello.com/1/cards/{0}/idLabels";
+	public static final String CARD_POST_ADD_MEMBER = "https://api.trello.com/1/cards/{0}/idMembers";
 	public static final String CARD_POST_VOTE_MEMBER = "https://api.trello.com/1/cards/{0}/membersVoted";
 	public static final String CARD_CLOSE_CARD = "https://api.trello.com/1/cards/{0}/closed";
 	public static final String CARD_DELETE_CARD = "https://api.trello.com/1/cards/{0}";
@@ -55,6 +55,7 @@ public class TrelloURI {
 	public static final String CARD_DELETE_MEMBER = "https://api.trello.com/1/cards/{0}/members/{1}";
 	public static final String CARD_DELETE_VOTE_MEMBER = "https://api.trello.com/1/cards/{0}/membersVoted/{1}";
 	public static final String CARD_DELETE_CHECKLIST = "https://api.trello.com/1/cards/{0}/checklists/{1}";
+	public static final String CARD_PUT_CHANGELIST = "https://api.trello.com/1/cards/{0}/idList";
 	public static final String LIST_ACTIONS_URL = "https://api.trello.com/1/lists/{0}/action";
 	public static final String LIST_BOARD_URL = "https://api.trello.com/1/lists/{0}/board";
 	public static final String LIST_CARDS_URL = "https://api.trello.com/1/lists/{0}/cards";
