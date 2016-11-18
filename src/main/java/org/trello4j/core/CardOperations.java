@@ -8,63 +8,68 @@ import org.trello4j.model.Action;
 import org.trello4j.model.Board;
 import org.trello4j.model.Card;
 import org.trello4j.model.Card.Attachment;
+import org.trello4j.model.Card.Label;
 import org.trello4j.model.Checklist;
 import org.trello4j.model.Checklist.CheckItem;
 import org.trello4j.model.Member;
 
 /**
  * The Interface CardService.
- * 
+ *
  * @author
  */
 public interface CardOperations {
 
-	Card get();
+    Card get();
 
-	List<Action> getActions();
+    List<Action> getActions();
 
-	List<Attachment> getAttachments();
+    List<Attachment> getAttachments();
 
-	Board getBoard(String... filter);
+    Board getBoard(String... filter);
 
-	List<CheckItem> getCheckItemStates();
+    List<CheckItem> getCheckItemStates();
 
-	List<Checklist> getChecklist();
+    List<Checklist> getChecklist();
 
-	org.trello4j.model.List getList(String... filter);
+    org.trello4j.model.List getList(String... filter);
 
-	List<Member> getMembers();
+    List<Member> getMembers();
 
-	Action comment(String text, String... filter);
+    Action comment(String text, String... filter);
 
-	List<Attachment> attach(File file, URL attachmentUrl, String name, String mimeType, String... filter);
+    List<Attachment> attach(File file, URL attachmentUrl, String name, String mimeType, String... filter);
 
-	Checklist addChecklist(String idChecklist, String checklistName, String idChecklistSource, String... filter);
+    Checklist addChecklist(String idChecklist, String checklistName, String idChecklistSource, String... filter);
 
-	boolean addLabel(String label);
+    List<Label> addLabel(String label);
 
-	boolean addMember(String memberId, String... filter);
+    boolean addMember(String memberId);
 
-	boolean vote(String memberId, String... filter);
+    Label createLabel(String color, String name, String... filters);
 
-	List<Member> getMemberVotes(String... filter);
-	
-	boolean changeList(String idList);
+    boolean vote(String memberId, String... filter);
 
-	/**
-	 * Archives the card.
-	 * @param value true to archive, false to remove from archive.
-	 * @return true if action was successful.
-	 */
-	boolean setClosed(boolean value);
+    List<Member> getMemberVotes(String... filter);
 
-	boolean delete(String... filter);
+    boolean changeList(String idList);
 
-	boolean deleteChecklist(String idList, String... filter);
+    /**
+     * Archives the card.
+     *
+     * @param value
+     *            true to archive, false to remove from archive.
+     * @return true if action was successful.
+     */
+    boolean setClosed(boolean value);
 
-	boolean deleteLabel(String color, String... filter);
+    boolean delete(String... filter);
 
-	boolean deleteMember(String idMember, String... filter);
+    boolean deleteChecklist(String idList, String... filter);
 
-	boolean deleteVote(String memberId, String... filter);
+    boolean deleteLabel(String color, String... filter);
+
+    boolean deleteMember(String idMember, String... filter);
+
+    boolean deleteVote(String memberId, String... filter);
 }
