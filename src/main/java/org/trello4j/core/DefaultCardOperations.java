@@ -95,7 +95,7 @@ public class DefaultCardOperations extends AbstractOperations implements CardOpe
     }
 
     @Override
-    public List<Attachment> attach(File file, URL attachmentUrl, String name, String mimeType, String... filters) {
+    public Attachment attach(File file, URL attachmentUrl, String name, String mimeType, String... filters) {
         Map<String, Object> keyValueMap = new HashMap<String, Object>();
         if (file != null)
             keyValueMap.put("file", new FileSystemResource(file));
@@ -107,9 +107,7 @@ public class DefaultCardOperations extends AbstractOperations implements CardOpe
             keyValueMap.put("mimeType", mimeType);
 
         TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_POST_ATTACHMENTS, cardId).filter(filters);
-        ParameterizedTypeReference<List<Attachment>> typeReference = new ParameterizedTypeReference<List<Attachment>>() {
-        };
-        return getTrelloAccessor().doPost(uri.build(), keyValueMap, typeReference);
+        return getTrelloAccessor().doPost(uri.build(), keyValueMap, Attachment.class);
     }
 
     @Override

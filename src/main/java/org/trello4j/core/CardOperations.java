@@ -38,7 +38,7 @@ public interface CardOperations {
 
     Action comment(String text, String... filter);
 
-    List<Attachment> attach(File file, URL attachmentUrl, String name, String mimeType, String... filter);
+    Attachment attach(File file, URL attachmentUrl, String name, String mimeType, String... filter);
 
     Checklist addChecklist(String idChecklist, String checklistName, String idChecklistSource, String... filter);
 

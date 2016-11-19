@@ -20,6 +20,7 @@ import org.trello4j.core.ListOperations;
 import org.trello4j.core.TrelloTemplate;
 import org.trello4j.model.Action;
 import org.trello4j.model.Card;
+import org.trello4j.model.Card.Attachment;
 import org.trello4j.model.Card.Label;
 import org.trello4j.model.Checklist;
 import org.trello4j.model.Member;
@@ -78,7 +79,7 @@ public class CardServiceTest {
         String cardId = "50429779e215b4e45d7aef24";
         String fileContents = "foo bar text in file\n";
         File file = File.createTempFile("trello_attach_test", ".junit");
-        if (!file.exists()) {
+        if (file.exists()) {
             try {
                 FileWriter fileWriter = new FileWriter(file);
                 fileWriter.write(fileContents);
@@ -88,21 +89,18 @@ public class CardServiceTest {
                 fail(e.toString());
             }
         }
-
-        long size = file.length();
         String fileName = file.getName();
 
         // WHEN
-        List<Card.Attachment> attachments = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(cardId)
-                .attach(file, null, null, null);
+        Attachment attachment = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(cardId).attach(file, null,
+                fileName, null);
+
         file.deleteOnExit();
 
         // THEN
-        assertNotNull(attachments);
-        Card.Attachment attachment = attachments.get(attachments.size() - 1);
+        assertNotNull(attachment);
 
         assertThat(attachment.getName(), equalTo(fileName));
-        assertThat(attachment.getBytes(), equalTo("" + size));
     }
 
     @Test
@@ -112,12 +110,11 @@ public class CardServiceTest {
         URL url = new URL("https://trello.com/images/reco/Taco_idle.png");
 
         // WHEN
-        List<Card.Attachment> attachments = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(cardId)
-                .attach(null, url, "Taco", null);
+        Attachment attachment = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(cardId).attach(null, url,
+                "Taco", null);
 
         // THEN
-        assertNotNull(attachments);
-        Card.Attachment attachment = attachments.get(attachments.size() - 1);
+        assertNotNull(attachment);
         assertNotNull(attachment);
         assertThat(attachment.getName(), equalTo("Taco"));
         assertTrue(attachment.getUrl().startsWith("http"));
