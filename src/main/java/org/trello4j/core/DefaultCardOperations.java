@@ -141,12 +141,10 @@ public class DefaultCardOperations extends AbstractOperations implements CardOpe
     }
 
     @Override
-    public List<Label> addLabel(String idLabel) {
+    public boolean addLabel(String idLabel) {
         Map<String, String> arguments = Collections.singletonMap("value", idLabel);
         TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_POST_ADD_LABEL_TO_CARD, cardId);
-        ParameterizedTypeReference<List<Label>> typeReference = new ParameterizedTypeReference<List<Label>>() {
-        };
-        return getTrelloAccessor().doPost(uri.build(), arguments, typeReference);
+        return getTrelloAccessor().doPost(uri.build(), arguments);
     }
 
     @Override

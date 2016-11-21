@@ -42,7 +42,7 @@ public interface CardOperations {
 
     Checklist addChecklist(String idChecklist, String checklistName, String idChecklistSource, String... filter);
 
-    List<Label> addLabel(String label);
+    boolean addLabel(String label);
 
     boolean addMember(String memberId);
 
