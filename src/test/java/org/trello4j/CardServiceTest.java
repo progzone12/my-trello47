@@ -33,14 +33,17 @@ public class CardServiceTest {
     // Note: this url was used to generate token with read, write permissions:
     // https://trello.com/1/authorize?key=23ec668887f03d4c71c7f74fb0ae30a4&name=My+Application&expiration=never&response_type=token&scope=read,write
 
-    private static final String API_KEY = "23ec668887f03d4c71c7f74fb0ae30a4";
-    private static final String API_TOKEN = "cfb1df98cbde193b3181e02a8bca9871eaeb8aed0659391f887631055b0b774d";
+    private static final String USER = "guuilp";
+    private static final String API_KEY = "b8a19fea9c86c56f92b47ba9841826c7";
+    private static final String API_TOKEN = "a8379d5621ca307209024191609a5b39a972a3424cfe0c52952158e91c764117";
     private static final String LIST_ID = "TODO";
+    private static final String CARD_ID = "58643da50130c162b124d9af";
+    private static final String ID_LIST = "5830d2555ea447150f1f081b";
 
     @Test
     public void testCreateCard() {
         // GIVEN
-        String listId = "4f82ed4f1903bae43e66f5fd";
+
         String name = "Trello4J CardService: Add Card using POST";
         String description = "Something awesome happened :)";
 
@@ -48,7 +51,7 @@ public class CardServiceTest {
         map.put("desc", description);
 
         // WHEN
-        Card card = new TrelloTemplate(API_KEY, API_TOKEN).boundListOperations(listId).createCard(name, description,
+        Card card = new TrelloTemplate(API_KEY, API_TOKEN).boundListOperations(ID_LIST).createCard(name, description,
                 null, null, null, null, null, null);
 
         // THEN
@@ -60,23 +63,21 @@ public class CardServiceTest {
     @Test
     public void testCommentOnCard() {
         // GIVEN
-        String cardId = "50429779e215b4e45d7aef24";
         String commentText = "Comment text from JUnit test.";
 
         // WHEN
-        Action action = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(cardId).comment(commentText);
+        Action action = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(CARD_ID).comment(commentText);
 
         // THEN
         assertNotNull(action);
         assertThat(action.getType(), equalTo(Action.TYPE.COMMENT_CARD));
         assertThat(action.getData().getText(), equalTo(commentText));
-        assertThat(action.getData().getCard().getId(), equalTo(cardId));
+        assertThat(action.getData().getCard().getId(), equalTo(CARD_ID));
     }
 
     @Test
     public void testAttachFileToCard() throws IOException {
         // GIVEN
-        String cardId = "50429779e215b4e45d7aef24";
         String fileContents = "foo bar text in file\n";
         File file = File.createTempFile("trello_attach_test", ".junit");
         if (file.exists()) {
@@ -92,7 +93,7 @@ public class CardServiceTest {
         String fileName = file.getName();
 
         // WHEN
-        Attachment attachment = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(cardId).attach(file, null,
+        Attachment attachment = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(CARD_ID).attach(file, null,
                 fileName, null);
 
         file.deleteOnExit();
@@ -106,11 +107,11 @@ public class CardServiceTest {
     @Test
     public void testAttachFileFromUrl() throws IOException {
         // GIVEN
-        String cardId = "50429779e215b4e45d7aef24";
+
         URL url = new URL("https://trello.com/images/reco/Taco_idle.png");
 
         // WHEN
-        Attachment attachment = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(cardId).attach(null, url,
+        Attachment attachment = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(CARD_ID).attach(null, url,
                 "Taco", null);
 
         // THEN
@@ -124,10 +125,9 @@ public class CardServiceTest {
     @Test
     public void testAddChecklistToCard() throws IOException {
         // GIVEN
-        String cardId = "50429779e215b4e45d7aef24";
 
         // WHEN
-        Checklist checklist = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(cardId).addChecklist(null,
+        Checklist checklist = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(CARD_ID).addChecklist(null,
                 null, null);
 
         // THEN
@@ -143,38 +143,39 @@ public class CardServiceTest {
         // becomes available.
 
         // GIVEN
-        String cardId = "50429779e215b4e45d7aef24";
+
         TrelloTemplate trello = new TrelloTemplate(API_KEY, API_TOKEN);
 
         // WHEN
-        trello.boundCardOperations(cardId).deleteLabel("blue");
-        Label label = trello.boundCardOperations(cardId).createLabel("blue", "blue");
+        trello.boundCardOperations(CARD_ID).deleteLabel("5830d2e384e677fd36663aaf");
+        Label label = trello.boundCardOperations(CARD_ID).createLabel("blue", "blue");
 
         // THEN
         assertNotNull(label);
         assertTrue(label.getColor().equals("blue"));
+
+        trello.boundCardOperations(CARD_ID).deleteLabel("5830d2e384e677fd36663aaf");
     }
 
     @Test
     public void testAddMemberToCard() throws IOException {
         // GIVEN
-        String cardId = "50429779e215b4e45d7aef24";
 
         TrelloTemplate trello = new TrelloTemplate(API_KEY, API_TOKEN);
-        Member boardUser = trello.boundMemberOperations("userj").get();
+        Member boardUser = trello.boundMemberOperations(USER).get();
 
         // PREPARE CARD
-        List<Member> cardMembers = trello.boundCardOperations(cardId).getMembers();
+        List<Member> cardMembers = trello.boundCardOperations(CARD_ID).getMembers();
         if (!cardMembers.isEmpty()) {
             for (Member member : cardMembers) {
-                trello.boundCardOperations(cardId).deleteMember(member.getId());
+                trello.boundCardOperations(CARD_ID).deleteMember(member.getId());
             }
         }
 
         // WHEN
-        trello.boundCardOperations(cardId).addMember(boardUser.getId());
+        trello.boundCardOperations(CARD_ID).addMember(boardUser.getId());
 
-        List<Member> members = trello.boundCardOperations(cardId).getMembers();
+        List<Member> members = trello.boundCardOperations(CARD_ID).getMembers();
 
         // THEN
         assertNotNull(members);
@@ -188,19 +189,19 @@ public class CardServiceTest {
         TrelloTemplate trello = new TrelloTemplate(API_KEY, API_TOKEN);
 
         // GIVEN
-        String cardId = "50429779e215b4e45d7aef24";
-        Member boardUser = trello.boundMemberOperations("userj").get();
+
+        Member boardUser = trello.boundMemberOperations(USER).get();
         assertNotNull(boardUser);
 
         // CLEANUP
-        List<Member> votedMembers = trello.boundCardOperations(cardId).getMemberVotes();
+        List<Member> votedMembers = trello.boundCardOperations(CARD_ID).getMemberVotes();
         if (votedMembers != null && !votedMembers.isEmpty()) {
             for (Member member : votedMembers) {
-                trello.boundCardOperations(cardId).deleteVote(member.getId());
+                trello.boundCardOperations(CARD_ID).deleteVote(member.getId());
             }
         }
         // WHEN
-        boolean voted = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(cardId).vote(boardUser.getId());
+        boolean voted = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(CARD_ID).vote(boardUser.getId());
 
         // THEN
         assertTrue(voted);
@@ -229,8 +230,8 @@ public class CardServiceTest {
         TrelloTemplate trello = new TrelloTemplate(API_KEY, API_TOKEN);
 
         // GIVEN
-        String idList = "4f82ed4f1903bae43e66f5fd";
-        Card card = trello.boundListOperations(idList).createCard("jUnitCard", null, null, null, null, null, null,
+
+        Card card = trello.boundListOperations(ID_LIST).createCard("jUnitCard", null, null, null, null, null, null,
                 null);
 
         // WHEN
@@ -245,11 +246,11 @@ public class CardServiceTest {
         TrelloTemplate trello = new TrelloTemplate(API_KEY, API_TOKEN);
 
         // GIVEN
-        String cardId = "50429779e215b4e45d7aef24";
-        Checklist checklist = trello.boundCardOperations(cardId).addChecklist(null, null, null);
+
+        Checklist checklist = trello.boundCardOperations(CARD_ID).addChecklist(null, null, null);
 
         // WHEN
-        boolean deletedChecklist = trello.boundCardOperations(cardId).deleteChecklist(checklist.getId());
+        boolean deletedChecklist = trello.boundCardOperations(CARD_ID).deleteChecklist(checklist.getId());
 
         // THEN
         assertTrue(deletedChecklist);
@@ -260,15 +261,12 @@ public class CardServiceTest {
         TrelloTemplate trello = new TrelloTemplate(API_KEY, API_TOKEN);
 
         // GIVEN
-        String cardId = "50429779e215b4e45d7aef24";
-        Member member = trello.boundMemberOperations("userj").get();
 
         // PREPARATION
-        trello.boundCardOperations(cardId).deleteLabel("blue");
-        trello.boundCardOperations(cardId).addLabel("blue");
+        trello.boundCardOperations(CARD_ID).addLabel("5830d2e384e677fd36663aaf");
 
         // WHEN
-        boolean deleted = trello.boundCardOperations(cardId).deleteLabel("blue");
+        boolean deleted = trello.boundCardOperations(CARD_ID).deleteLabel("5830d2e384e677fd36663aaf");
 
         // THEN
         assertTrue(deleted);
@@ -279,21 +277,21 @@ public class CardServiceTest {
         TrelloTemplate trello = new TrelloTemplate(API_KEY, API_TOKEN);
 
         // GIVEN
-        String cardId = "50429779e215b4e45d7aef24";
-        Member member = trello.boundMemberOperations("userj").get();
+
+        Member member = trello.boundMemberOperations(USER).get();
 
         // PREPARATION
-        List<Member> members = trello.boundCardOperations(cardId).getMembers();
+        List<Member> members = trello.boundCardOperations(CARD_ID).getMembers();
         boolean needToAddMember = true;
         for (Member cardMember : members) {
             if (cardMember.getId().equals(member.getId()))
                 needToAddMember = false;
         }
         if (needToAddMember)
-            trello.boundCardOperations(cardId).addMember(member.getId());
+            trello.boundCardOperations(CARD_ID).addMember(member.getId());
 
         // WHEN
-        boolean removedMemberFromCard = trello.boundCardOperations(cardId).deleteMember(member.getId());
+        boolean removedMemberFromCard = trello.boundCardOperations(CARD_ID).deleteMember(member.getId());
 
         // THEN
         assertTrue(removedMemberFromCard);
@@ -304,11 +302,11 @@ public class CardServiceTest {
         TrelloTemplate trello = new TrelloTemplate(API_KEY, API_TOKEN);
 
         // GIVEN
-        String cardId = "50429779e215b4e45d7aef24";
-        Member boardUser = trello.boundMemberOperations("userj").get();
+
+        Member boardUser = trello.boundMemberOperations(USER).get();
         assertNotNull(boardUser);
 
-        List<Member> membersVoted = trello.boundCardOperations(cardId).getMemberVotes();
+        List<Member> membersVoted = trello.boundCardOperations(CARD_ID).getMemberVotes();
 
         boolean needToAddVote = true;
         for (Member member : membersVoted) {
@@ -317,12 +315,12 @@ public class CardServiceTest {
         }
 
         if (needToAddVote) {
-            boolean addedVote = trello.boundCardOperations(cardId).vote(boardUser.getId());
+            boolean addedVote = trello.boundCardOperations(CARD_ID).vote(boardUser.getId());
             assertTrue(addedVote);
         }
 
         // WHEN
-        boolean removedFromCard = trello.boundCardOperations(cardId).deleteVote(boardUser.getId());
+        boolean removedFromCard = trello.boundCardOperations(CARD_ID).deleteVote(boardUser.getId());
 
         // THEN
         assertTrue(removedFromCard);

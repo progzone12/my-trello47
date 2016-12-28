@@ -190,8 +190,9 @@ public class DefaultCardOperations extends AbstractOperations implements CardOpe
     }
 
     @Override
-    public boolean deleteLabel(String color, String... filters) {
-        TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_DELETE_LABEL, cardId, color).filter(filters);
+    public boolean deleteLabel(String idLabel, String... filters) {
+        TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_DELETE_LABEL, cardId, idLabel)
+                .filter(filters);
         return getTrelloAccessor().doDelete(uri.build());
     }
 
