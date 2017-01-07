@@ -2,11 +2,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.guuilp</groupId>
 	<artifactId>trello4j</artifactId>
-	<version>1.1</version>
+	<version>1.2</version>
 	<packaging>jar</packaging>
 	<name>trello4j</name>
 	<url>https://github.com/guuilp/trello4j</url>
-	<description>Java wrapper around Trello API. A fork of original project to continue it.</description>
+	<description>Java wrapper around Trello API. A fork of original project.</description>
 	<licenses>
 		<license>
 			<name>Apache License 2.0</name>
@@ -27,23 +27,11 @@
 	</scm>
 	<developers>
 		<developer>
-			<id>joelso</id>
-			<name>Joel</name>
-			<email>joel@frostdigital.se</email>
-			<url>http://frostdigital.se/</url>
-			<roles>
-				<role>architect</role>
-				<role>developer</role>
-			</roles>
-		</developer>
-		<developer>
 			<id>guilherme</id>
 			<name>Guilherme</name>
 			<email>guuuilp@gmail.com</email>
 			<url>https://github.com/guuilp</url>
 			<roles>
-				<role>lead</role>
-				<role>architect</role>
 				<role>developer</role>
 			</roles>
 		</developer>
