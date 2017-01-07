@@ -72,4 +72,8 @@ public interface CardOperations {
     boolean deleteMember(String idMember, String... filter);
 
     boolean deleteVote(String memberId, String... filter);
+
+    boolean addDueDate(String dueDate);
+
+    boolean setDueDateComplete(boolean dueDateComplete);
 }

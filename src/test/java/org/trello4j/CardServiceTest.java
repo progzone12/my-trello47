@@ -25,9 +25,6 @@ import org.trello4j.model.Card.Label;
 import org.trello4j.model.Checklist;
 import org.trello4j.model.Member;
 
-/**
- * @author Johan Mynhardt
- */
 public class CardServiceTest {
 
     // Note: this url was used to generate token with read, write permissions:
@@ -73,6 +70,27 @@ public class CardServiceTest {
         assertThat(action.getType(), equalTo(Action.TYPE.COMMENT_CARD));
         assertThat(action.getData().getText(), equalTo(commentText));
         assertThat(action.getData().getCard().getId(), equalTo(CARD_ID));
+    }
+
+    @Test
+    public void testSetDueDateOnCard() {
+        // WHEN
+        boolean action = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(CARD_ID)
+                .addDueDate("10/03/2017 09:32 pm");
+
+        // THEN
+        assertNotNull(action);
+        assertTrue(action);
+    }
+
+    @Test
+    public void testSetDueDateCompleteOnCard() {
+        // WHEN
+        boolean action = new TrelloTemplate(API_KEY, API_TOKEN).boundCardOperations(CARD_ID).setDueDateComplete(false);
+
+        // THEN
+        assertNotNull(action);
+        assertTrue(action);
     }
 
     @Test

@@ -155,6 +155,20 @@ public class DefaultCardOperations extends AbstractOperations implements CardOpe
     }
 
     @Override
+    public boolean addDueDate(String dueDate) {
+        Map<String, String> arguments = Collections.singletonMap("value", dueDate);
+        TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_PUT_ADD_DUE, cardId);
+        return getTrelloAccessor().doPut(uri.build(), arguments);
+    }
+
+    @Override
+    public boolean setDueDateComplete(boolean dueDateComplete) {
+        Map<String, Boolean> arguments = Collections.singletonMap("value", dueDateComplete);
+        TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_PUT_SET_DUE_COMPLETE, cardId);
+        return getTrelloAccessor().doPut(uri.build(), arguments);
+    }
+
+    @Override
     public boolean vote(String memberId, String... filters) {
         Map<String, String> keyValueMap = Collections.singletonMap("value", memberId);
         TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_POST_VOTE_MEMBER, cardId).filter(filters);

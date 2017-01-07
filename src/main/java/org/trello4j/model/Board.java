@@ -1,251 +1,217 @@
+
 package org.trello4j.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.trello4j.gson.CopyOfPermissionTypeDeserializer;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-public class Board extends TrelloObject {
+public class Board {
+    @JsonDeserialize(using = CopyOfPermissionTypeDeserializer.class)
+    public enum PERMISSION_TYPE {
+        PUBLIC, ORGANIZATION, MEMBERS
+    }
 
-	@JsonDeserialize(using = CopyOfPermissionTypeDeserializer.class)
-	public enum PERMISSION_TYPE {
-		PUBLIC, ORGANIZATION, MEMBERS
-	}
+    private String name;
+    private String desc;
+    private Object descData;
+    private Boolean closed;
+    private String idOrganization;
+    private Object pinned;
+    private Object invitations;
+    private String shortLink;
+    private List<String> powerUps = null;
+    private String dateLastActivity;
+    private List<Object> idTags = null;
+    private String id;
+    private Boolean invited;
+    private Boolean starred;
+    private String url;
+    private Prefs prefs;
+    private List<Membership> memberships = null;
+    private Boolean subscribed;
+    private LabelNames labelNames;
+    private String dateLastView;
+    private String shortUrl;
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-	private String name;
-	private String desc;
-	private boolean closed;
-	private boolean invited = false;
-	private String idOrganization;
-	private String url;
-	private Prefs prefs;
-	private boolean pinned;
-	private LabelNames labelNames;
+    public String getName() {
+        return name;
+    }
 
-	public boolean isPinned() {
-		return pinned;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setPinned(boolean pinned) {
-		this.pinned = pinned;
-	}
+    public String getDesc() {
+        return desc;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Object getDescData() {
+        return descData;
+    }
 
-	public String getDesc() {
-		return desc;
-	}
+    public void setDescData(Object descData) {
+        this.descData = descData;
+    }
 
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
+    public Boolean getClosed() {
+        return closed;
+    }
 
-	public String getIdOrganization() {
-		return idOrganization;
-	}
+    public void setClosed(Boolean closed) {
+        this.closed = closed;
+    }
 
-	public void setIdOrganization(String idOrganization) {
-		this.idOrganization = idOrganization;
-	}
+    public String getIdOrganization() {
+        return idOrganization;
+    }
 
-	public boolean isClosed() {
-		return closed;
-	}
+    public void setIdOrganization(String idOrganization) {
+        this.idOrganization = idOrganization;
+    }
 
-	public void setClosed(boolean closed) {
-		this.closed = closed;
-	}
+    public Object getPinned() {
+        return pinned;
+    }
 
-	public String getUrl() {
-		return url;
-	}
+    public void setPinned(Object pinned) {
+        this.pinned = pinned;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public Object getInvitations() {
+        return invitations;
+    }
 
-	public Prefs getPrefs() {
-		return prefs;
-	}
+    public void setInvitations(Object invitations) {
+        this.invitations = invitations;
+    }
 
-	public void setPrefs(Prefs prefs) {
-		this.prefs = prefs;
-	}
+    public String getShortLink() {
+        return shortLink;
+    }
 
-	public LabelNames getLabelNames() {
-		return labelNames;
-	}
+    public void setShortLink(String shortLink) {
+        this.shortLink = shortLink;
+    }
 
-	public void setLabelNames(LabelNames labelNames) {
-		this.labelNames = labelNames;
-	}
+    public List<String> getPowerUps() {
+        return powerUps;
+    }
 
-	public boolean isInvited() {
-		return invited;
-	}
+    public void setPowerUps(List<String> powerUps) {
+        this.powerUps = powerUps;
+    }
 
-	public void setInvited(boolean invited) {
-		this.invited = invited;
-	}
+    public String getDateLastActivity() {
+        return dateLastActivity;
+    }
 
-	public class LabelNames {
+    public void setDateLastActivity(String dateLastActivity) {
+        this.dateLastActivity = dateLastActivity;
+    }
 
-		private String yellow;
-		private String red;
-		private String purple;
-		private String orange;
-		private String green;
-		private String blue;
+    public List<Object> getIdTags() {
+        return idTags;
+    }
 
-		public String getYellow() {
-			return yellow;
-		}
+    public void setIdTags(List<Object> idTags) {
+        this.idTags = idTags;
+    }
 
-		public void setYellow(String yellow) {
-			this.yellow = yellow;
-		}
+    public String getId() {
+        return id;
+    }
 
-		public String getRed() {
-			return red;
-		}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-		public void setRed(String red) {
-			this.red = red;
-		}
+    public Boolean getInvited() {
+        return invited;
+    }
 
-		public String getPurple() {
-			return purple;
-		}
+    public void setInvited(Boolean invited) {
+        this.invited = invited;
+    }
 
-		public void setPurple(String purple) {
-			this.purple = purple;
-		}
+    public Boolean getStarred() {
+        return starred;
+    }
 
-		public String getOrange() {
-			return orange;
-		}
+    public void setStarred(Boolean starred) {
+        this.starred = starred;
+    }
 
-		public void setOrange(String orange) {
-			this.orange = orange;
-		}
+    public String getUrl() {
+        return url;
+    }
 
-		public String getGreen() {
-			return green;
-		}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-		public void setGreen(String green) {
-			this.green = green;
-		}
+    public Prefs getPrefs() {
+        return prefs;
+    }
 
-		public String getBlue() {
-			return blue;
-		}
+    public void setPrefs(Prefs prefs) {
+        this.prefs = prefs;
+    }
 
-		public void setBlue(String blue) {
-			this.blue = blue;
-		}
+    public List<Membership> getMemberships() {
+        return memberships;
+    }
 
-	}
+    public void setMemberships(List<Membership> memberships) {
+        this.memberships = memberships;
+    }
 
-	@JsonIgnoreProperties(ignoreUnknown = true)
-	public class Prefs {
+    public Boolean getSubscribed() {
+        return subscribed;
+    }
 
-		private PERMISSION_TYPE voting;
-		private PERMISSION_TYPE permissionLevel;
-		private PERMISSION_TYPE invitations;
-		private PERMISSION_TYPE comments;
-		private boolean selfJoin;
-		private boolean cardCovers;
-		private boolean canBePublic;
-		private boolean canBeOrg;
-		private boolean canBePrivate;
-		private boolean canInvite;
+    public void setSubscribed(Boolean subscribed) {
+        this.subscribed = subscribed;
+    }
 
-		public boolean isSelfJoin() {
-			return selfJoin;
-		}
+    public LabelNames getLabelNames() {
+        return labelNames;
+    }
 
-		public void setSelfJoin(boolean selfJoin) {
-			this.selfJoin = selfJoin;
-		}
+    public void setLabelNames(LabelNames labelNames) {
+        this.labelNames = labelNames;
+    }
 
-		public boolean isCardCovers() {
-			return cardCovers;
-		}
+    public String getDateLastView() {
+        return dateLastView;
+    }
 
-		public void setCardCovers(boolean cardCovers) {
-			this.cardCovers = cardCovers;
-		}
+    public void setDateLastView(String dateLastView) {
+        this.dateLastView = dateLastView;
+    }
 
-		public boolean isCanBePublic() {
-			return canBePublic;
-		}
+    public String getShortUrl() {
+        return shortUrl;
+    }
 
-		public void setCanBePublic(boolean canBePublic) {
-			this.canBePublic = canBePublic;
-		}
+    public void setShortUrl(String shortUrl) {
+        this.shortUrl = shortUrl;
+    }
 
-		public boolean isCanBeOrg() {
-			return canBeOrg;
-		}
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
 
-		public void setCanBeOrg(boolean canBeOrg) {
-			this.canBeOrg = canBeOrg;
-		}
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
 
-		public boolean isCanBePrivate() {
-			return canBePrivate;
-		}
-
-		public void setCanBePrivate(boolean canBePrivate) {
-			this.canBePrivate = canBePrivate;
-		}
-
-		public boolean isCanInvite() {
-			return canInvite;
-		}
-
-		public void setCanInvite(boolean canInvite) {
-			this.canInvite = canInvite;
-		}
-
-		public PERMISSION_TYPE getVoting() {
-			return voting;
-		}
-
-		public void setVoting(PERMISSION_TYPE voting) {
-			this.voting = voting;
-		}
-
-		public PERMISSION_TYPE getPermissionLevel() {
-			return permissionLevel;
-		}
-
-		public void setPermissionLevel(PERMISSION_TYPE permissionLevel) {
-			this.permissionLevel = permissionLevel;
-		}
-
-		public PERMISSION_TYPE getInvitations() {
-			return invitations;
-		}
-
-		public void setInvitations(PERMISSION_TYPE invitations) {
-			this.invitations = invitations;
-		}
-
-		public PERMISSION_TYPE getComments() {
-			return comments;
-		}
-
-		public void setComments(PERMISSION_TYPE comments) {
-			this.comments = comments;
-		}
-
-	}
 }
