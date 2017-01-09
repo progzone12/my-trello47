@@ -28,14 +28,14 @@ import org.trello4j.model.Member;
 public class CardServiceTest {
 
     // Note: this url was used to generate token with read, write permissions:
-    // https://trello.com/1/authorize?key=23ec668887f03d4c71c7f74fb0ae30a4&name=My+Application&expiration=never&response_type=token&scope=read,write
+    // https://trello.com/1/authorize?key=3ad3df554efd6fca86586146f1311fa6&name=MyApplication001&expiration=never&response_type=token&scope=read,write
 
-    private static final String USER = "guuilp";
-    private static final String API_KEY = "b8a19fea9c86c56f92b47ba9841826c7";
-    private static final String API_TOKEN = "a8379d5621ca307209024191609a5b39a972a3424cfe0c52952158e91c764117";
-    private static final String LIST_ID = "TODO";
-    private static final String CARD_ID = "58643da50130c162b124d9af";
-    private static final String ID_LIST = "5830d2555ea447150f1f081b";
+    private static final String USER = "testoctoberwebru";
+    private static final String API_KEY = "3ad3df554efd6fca86586146f1311fa6";
+    private static final String API_TOKEN = "6c9c6b04d47eb3e2ff393b9c7b1cf3cd7f098e66f87dd1ea688db0dbb2463056";
+    private static final String LIST_ID = "backlog";
+    private static final String CARD_ID = "5873f9fa7ffeb6515de1e688";
+    private static final String ID_LIST = "586ba18216ca1af74fa13ee4";
 
     @Test
     public void testCreateCard() {
@@ -165,14 +165,14 @@ public class CardServiceTest {
         TrelloTemplate trello = new TrelloTemplate(API_KEY, API_TOKEN);
 
         // WHEN
-        trello.boundCardOperations(CARD_ID).deleteLabel("5830d2e384e677fd36663aaf");
+        trello.boundCardOperations(CARD_ID).deleteLabel("5873fb3bced82109ffa9a121");
         Label label = trello.boundCardOperations(CARD_ID).createLabel("blue", "blue");
 
         // THEN
         assertNotNull(label);
         assertTrue(label.getColor().equals("blue"));
 
-        trello.boundCardOperations(CARD_ID).deleteLabel("5830d2e384e677fd36663aaf");
+        trello.boundCardOperations(CARD_ID).deleteLabel("5873fb3bced82109ffa9a121");
     }
 
     @Test
@@ -281,10 +281,10 @@ public class CardServiceTest {
         // GIVEN
 
         // PREPARATION
-        trello.boundCardOperations(CARD_ID).addLabel("5830d2e384e677fd36663aaf");
+        trello.boundCardOperations(CARD_ID).addLabel("5873fb3bced82109ffa9a121");
 
         // WHEN
-        boolean deleted = trello.boundCardOperations(CARD_ID).deleteLabel("5830d2e384e677fd36663aaf");
+        boolean deleted = trello.boundCardOperations(CARD_ID).deleteLabel("5873fb3bced82109ffa9a121");
 
         // THEN
         assertTrue(deleted);
