@@ -230,4 +230,12 @@ public class DefaultCardOperations extends AbstractOperations implements CardOpe
         TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_PUT_CHANGELIST, cardId);
         return getTrelloAccessor().doPut(uri.build(), arguments);
     }
+
+    //ujif methods add
+    @Override
+    public boolean setNewName(String name, String... filter) {
+        Map<String, String> arguments = Collections.singletonMap("value", name);
+        TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.CARD_PUT_SET_NAME, cardId);
+        return getTrelloAccessor().doPut(uri.build(), arguments);
+    }
 }

@@ -41,7 +41,7 @@ public class CardServiceTest {
     public void testCreateCard() {
         // GIVEN
 
-        String name = "Trello4J CardService: Add Card using POST";
+        String name = "2202 Trello4J CardService: Add Card using POST";
         String description = "Something awesome happened :)";
 
         Map<String, Object> map = new HashMap<String, Object>();

@@ -81,11 +81,23 @@ public class TrelloURI {
     public static final String TOKENS_URL = "https://api.trello.com/1/tokens/{0}";
     public static final String TOKENS_MEMBER_URL = "https://api.trello.com/1/tokens/{0}/member";
     public static final String ORGANIZATION_MEMBERS_URL = "https://api.trello.com/1/organizations/{0}/members";
+
+    //ujif add
+
+    public static final String CARD_PUT_SET_NAME = "https://api.trello.com/1/cards/{0}/name";
+    public static final String BOARD_POST_URL = "https://api.trello.com/1/boards/";
+    public static final String BOARD_PUT_MEMBER = "https://api.trello.com/1/boards/{0}/members/{1}";
+
+   //end ujif add
+
     private static final String PATH_PARAM_ARG_PREFIX = "\\{";
     private static final String PATH_PARAM_ARG_SUFFIX = "\\}";
     private static final String KEY_QUERY_PARAM = "?key=";
     private static final String TOKEN_QUERY_PARAM = "&token=";
     private static final String FILTER_QUERY_PARAM = "&filter=";
+
+
+
 
     private final String[] pathParams;
 

@@ -16,6 +16,7 @@ import org.trello4j.model.Prefs;
  */
 public interface BoardOperations {
 
+    //GET
     Board get();
 
     List<Action> getActions(String... filter);
@@ -33,5 +34,10 @@ public interface BoardOperations {
     List<Card> getCards(String... filter);
 
     Prefs getPrefs();
+
+
+    //PUT
+
+    boolean addMemberOnBoard(String memberId, String type);
 
 }

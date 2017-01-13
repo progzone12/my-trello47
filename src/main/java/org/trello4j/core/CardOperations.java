@@ -17,6 +17,7 @@ import org.trello4j.model.Member;
  * The Interface CardService.
  *
  * @author
+ * Ujif
  */
 public interface CardOperations {
 
@@ -76,4 +77,8 @@ public interface CardOperations {
     boolean addDueDate(String dueDate);
 
     boolean setDueDateComplete(boolean dueDateComplete);
+
+    //ujif methods add
+    boolean setNewName (String name, String... filter);
+
 }

@@ -1,16 +1,12 @@
 package org.trello4j.core;
 
-import java.util.List;
-
 import org.springframework.core.ParameterizedTypeReference;
 import org.trello4j.TrelloURI;
-import org.trello4j.model.Action;
-import org.trello4j.model.Board;
-import org.trello4j.model.Card;
-import org.trello4j.model.Checklist;
-import org.trello4j.model.Member;
-import org.trello4j.model.Organization;
-import org.trello4j.model.Prefs;
+import org.trello4j.model.*;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 public class DefaultBoardOperations extends AbstractOperations implements BoardOperations {
 
@@ -89,4 +85,13 @@ public class DefaultBoardOperations extends AbstractOperations implements BoardO
         return getTrelloAccessor().doGet(uri.build(), Organization.class);
     }
 
+    //ujif methods add
+
+    @Override
+    public boolean addMemberOnBoard(String memberId, String type) {
+        validateNotNull(type);
+        Map<String, String> arguments = Collections.singletonMap("type", type);
+        TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.BOARD_PUT_MEMBER, boardId, memberId);
+        return getTrelloAccessor().doPut(uri.build(), arguments);
+    }
 }
