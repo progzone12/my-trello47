@@ -1,4 +1,5 @@
 import org.trello4j.core.TrelloTemplate;
+import org.trello4j.model.Action;
 import org.trello4j.model.Board;
 import org.trello4j.model.Card;
 import org.trello4j.model.Member;
@@ -16,26 +17,50 @@ public class TrelloHandler {
     private static final String ID_LIST = "586ba18216ca1af74fa13ee4";
     private static final String BOARD_ID = "586ba0f770c68e3ba025c662";
     private static final String TEAM_SHORTNAME = "teamforapi";
+    private static final String TO_LIST_NAME = "To Do";
 
 
     public static void main(String[] args) {
 
         List<Member> teamMembers = getTeamMembers(TEAM_SHORTNAME);
-        Map<Member, Board> membersPersonalBoard = new HashMap<Member, Board>();
+        Map<Member, Board> membersPersonalBoards = new HashMap<Member, Board>();
+        Board personalBoardInTeam;
+        List<Card> memberCards;
+        List<org.trello4j.model.List> boardList;
+        String IdList;
 
         for (Member m : teamMembers) {
-            //1 check on exist
-            //2 check on update
-            //3 create board
-            Board board = new TrelloTemplate(API_KEY, API_TOKEN).boundMemberOperations(m.getId()).createBoard(m.getUsername(), TEAM_SHORTNAME, "org");
+            //1 check board on exist
+            //??? 2 check board on update
+            //3 create personal board
+            personalBoardInTeam = createPersonalBoardInTeam(m, TEAM_SHORTNAME);
             //4 add member with admin permission
-            new TrelloTemplate(API_KEY, API_TOKEN).boundBoardOperations(board.getId()).addMemberOnBoard(m.getId(), "admin");
+            addAdminMemberOnBoard(m, personalBoardInTeam);
+            //put in local map just added personal board
+            membersPersonalBoards.put(m, personalBoardInTeam);
+            //get list of all boardLists in just added personal board
+            boardList = new TrelloTemplate(API_KEY,API_TOKEN).boundBoardOperations(personalBoardInTeam.getId()).getList();
+            IdList = boardList.get(0).getId(); // choose first
             //5 list personal board one-to-one
-            membersPersonalBoard.put(m,board);
             //6 get all member task in list
-            //6.1 get all member card from all non-personal boards
+            //6.1 get list of all members card from all non-personal boards
             //6.2 get all cards from all non-personal boards
+            // TODO: 14.01.2017 filter personal boards , now there are all cards in list
+            memberCards = new TrelloTemplate(API_KEY, API_TOKEN).boundMemberOperations(m.getUsername()).getCards();
             //7 copy all cards in personal board
+            // TODO: 14.01.2017 to change null-parameters in method for right coping
+            // TODO: 14.01.2017 to add member on board if here was not there
+            for (Card memberCard : memberCards) {
+                createCard(getBoardName(
+                        memberCard.getIdBoard()),
+                        /*personalBoardInTeam.getName(),*/
+                        IdList,
+                        memberCard.getName(),
+                        memberCard.getDesc(),
+                        "0",
+                        memberCard.getId());
+            }
+            //7.1 // TODO: 14.01.2017 update card with PUT
             //8 observe all changes in personal and non-personal boards
             //feature: observe all messages in slack or other
             //9 synchronize all changes in all cards in in personal and non-personal boards
@@ -43,7 +68,7 @@ public class TrelloHandler {
         }
 
 
-//        createCard();
+//        createCard("Name","Desc","0");
 /*
         for (Card c : getListOfCards(ID_LIST)) {
             System.out.println(c.getName());
@@ -61,8 +86,16 @@ public class TrelloHandler {
         */
     }
 
-    private static List<Member> getTeamMembers(String teamIdOrShorname) {
-        return new TrelloTemplate(API_KEY, API_TOKEN).boundOrganizationOperations(teamIdOrShorname).getMembers();
+    private static void addAdminMemberOnBoard(Member m, Board board) {
+        new TrelloTemplate(API_KEY, API_TOKEN).boundBoardOperations(board.getId()).addMemberOnBoard(m.getId(), "admin");
+    }
+
+    private static Board createPersonalBoardInTeam(Member m, String team) {
+        return new TrelloTemplate(API_KEY, API_TOKEN).boundMemberOperations(m.getId()).createBoard(m.getUsername(), team, "org");
+    }
+
+    private static List<Member> getTeamMembers(String teamIdOrShortName) {
+        return new TrelloTemplate(API_KEY, API_TOKEN).boundOrganizationOperations(teamIdOrShortName).getMembers();
     }
 
     private static Card getCardByPosition(int cardPosition) {
@@ -81,12 +114,12 @@ public class TrelloHandler {
         return boardName;
     }
 
-    private static void createTrelloCard(Card card) {
+    /*private static void createTrelloCard(Card card) {
         String fullCardName = getBoardName(BOARD_ID) + " " + card.getName() + " (test)";
         String position = "" + card.getPos();
         new TrelloTemplate(API_KEY, API_TOKEN).boundListOperations(ID_LIST).createCard(fullCardName,
                 null, null, position, null, null, null, null);
-    }
+    }*/
 
     private static void updateTrelloCard(Card card) {
         String fullCardName = "*" + /*getBoardName(BOARD_ID) + " " +*/ card.getName();
@@ -94,23 +127,14 @@ public class TrelloHandler {
     }
 
 
-    private static void createCard() {
-//        CardService: Add Card using POST
-        String cardName = "0-index card name";
-        String description = "this card create from class TrelloHandler " +
-                "-> public static void main ";
-        String position = "0";
-
+    private static void createCard(String boardFrom, /*String board, */String boardList, String cardName, String description, String position, String cardSourceId) {
+        //CardService: Add Card using POST
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("desc", description);
 
-        String fullCardName = getBoardName(BOARD_ID) + " " + cardName;
+        String fullCardName = boardFrom + " " + cardName;
 
-        Card card = new TrelloTemplate(API_KEY, API_TOKEN).boundListOperations(ID_LIST).createCard(fullCardName,
-                description, null, position, null, null, null, null);
-
-//        assertNotNull(card);
-//        assertThat(card.getName(), equalTo(name));
-//        assertThat(card.getDesc(), equalTo(description));
+        Card card = new TrelloTemplate(API_KEY, API_TOKEN).boundListOperations(boardList).createCard(fullCardName,
+                description, null, position, null, null, cardSourceId, null);
     }
 }

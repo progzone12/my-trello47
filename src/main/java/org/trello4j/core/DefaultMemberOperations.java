@@ -89,7 +89,6 @@ public class DefaultMemberOperations extends AbstractOperations implements Membe
             keyValueMap.put("prefs_permissionLevel", prefs_permissionLevel);
         }
 
-
         TrelloURI uri = getTrelloAccessor().createTrelloUri(TrelloURI.BOARD_POST_URL);
         return getTrelloAccessor().doPost(uri.build(), keyValueMap, Board.class);
     }
