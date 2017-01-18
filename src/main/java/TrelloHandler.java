@@ -22,6 +22,7 @@ public class TrelloHandler {
     public static void main(String[] args) {
 
         List<Member> teamMembers = getTeamMembers(TEAM_SHORTNAME);
+        
         System.out.println(teamMembers.get(0).getFullName());
         List<Board> teamBoards = getTeamBoards(TEAM_SHORTNAME);
 
