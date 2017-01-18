@@ -9,33 +9,34 @@ import org.trello4j.gson.CopyOfPermissionTypeDeserializer;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-public class Board {
+public class Board extends TrelloObject {
     @JsonDeserialize(using = CopyOfPermissionTypeDeserializer.class)
     public enum PERMISSION_TYPE {
         PUBLIC, ORGANIZATION, MEMBERS
     }
 
-    private String name;
+    private Boolean closed;
+    private String dateLastActivity;
+    private String dateLastView;
     private String desc;
     private Object descData;
-    private Boolean closed;
-    private String idOrganization;
-    private Object pinned;
-    private Object invitations;
-    private String shortLink;
-    private List<String> powerUps = null;
-    private String dateLastActivity;
-    private List<Object> idTags = null;
     private String id;
+    private String idOrganization;
+    //private List<Object> idTags = null;
+    private Object invitations;
     private Boolean invited;
-    private Boolean starred;
-    private String url;
-    private Prefs prefs;
-    private List<Membership> memberships = null;
-    private Boolean subscribed;
-    private LabelNames labelNames;
-    private String dateLastView;
+    //private LabelNames labelNames = null;
+    private List<Membership> memberships;
+    private String name;
+    private Object pinned;
+   // private List<String> powerUps = null;
+    //private Prefs prefs = null;
+    private String shortLink;
     private String shortUrl;
+    private Boolean starred;
+    private Boolean subscribed;
+    private String url;
+
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     public String getName() {
@@ -102,13 +103,13 @@ public class Board {
         this.shortLink = shortLink;
     }
 
-    public List<String> getPowerUps() {
+/*    public List<String> getPowerUps() {
         return powerUps;
     }
 
     public void setPowerUps(List<String> powerUps) {
         this.powerUps = powerUps;
-    }
+    }*/
 
     public String getDateLastActivity() {
         return dateLastActivity;
@@ -117,6 +118,7 @@ public class Board {
     public void setDateLastActivity(String dateLastActivity) {
         this.dateLastActivity = dateLastActivity;
     }
+/*
 
     public List<Object> getIdTags() {
         return idTags;
@@ -125,6 +127,7 @@ public class Board {
     public void setIdTags(List<Object> idTags) {
         this.idTags = idTags;
     }
+*/
 
     public String getId() {
         return id;
@@ -158,6 +161,7 @@ public class Board {
         this.url = url;
     }
 
+/*
     public Prefs getPrefs() {
         return prefs;
     }
@@ -173,6 +177,7 @@ public class Board {
     public void setMemberships(List<Membership> memberships) {
         this.memberships = memberships;
     }
+*/
 
     public Boolean getSubscribed() {
         return subscribed;
@@ -182,6 +187,7 @@ public class Board {
         this.subscribed = subscribed;
     }
 
+/*
     public LabelNames getLabelNames() {
         return labelNames;
     }
@@ -189,6 +195,7 @@ public class Board {
     public void setLabelNames(LabelNames labelNames) {
         this.labelNames = labelNames;
     }
+*/
 
     public String getDateLastView() {
         return dateLastView;

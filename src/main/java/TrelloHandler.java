@@ -1,5 +1,4 @@
 import org.trello4j.core.TrelloTemplate;
-import org.trello4j.model.Action;
 import org.trello4j.model.Board;
 import org.trello4j.model.Card;
 import org.trello4j.model.Member;
@@ -23,42 +22,72 @@ public class TrelloHandler {
     public static void main(String[] args) {
 
         List<Member> teamMembers = getTeamMembers(TEAM_SHORTNAME);
-        Map<Member, Board> membersPersonalBoards = new HashMap<Member, Board>();
+        List<Board> teamBoards = getTeamBoards(TEAM_SHORTNAME);
+
         Board personalBoardInTeam;
+        Map<Member, Board> membersPersonalBoards = new HashMap<Member, Board>();
+
         List<Card> memberCards;
         List<org.trello4j.model.List> boardList;
         String IdList;
+        List<Board> allMBoards = new TrelloTemplate(API_KEY, API_TOKEN).boundOrganizationOperations(TEAM_SHORTNAME).getBoards("all");
 
         for (Member m : teamMembers) {
-            //1 check board on exist
+            boolean boardExist = false;
+//            1 check board on exist
+//            get all members organization boards
+//            List<Board> allOrgBoard = new TrelloTemplate(API_KEY, API_TOKEN).boundOrganizationOperations(m.getId()).getBoards();
+//            allOrgBoard.contains(membersPersonalBoards.get(m));
+//            https://api.trello.com/1/members/testoctoberwebru/boards?key=3ad3df554efd6fca86586146f1311fa6&token=6c9c6b04d47eb3e2ff393b9c7b1cf3cd7f098e66f87dd1ea688db0dbb2463056
+
+
+            if (teamBoards.size() > 0 &
+                    !membersPersonalBoards.containsKey(m)) { //смотрим в membersPersonalBoards, т.к. в ней быстрее
+                for (Board mb : teamBoards) { //проверить каждую доску команды на наличие с таким названием, может быть руками кто-то создал
+                    if (mb.getName().equals(m.getUsername())) {
+                        // TODO: 19.01.2017 добавить проверку условия и метод переименования доски, добавленной руками, с пометкой (handmade board)
+                        boardExist = true;
+                        break;
+                    }
+                }
+            }
+
             //??? 2 check board on update
-            //3 create personal board
-            personalBoardInTeam = createPersonalBoardInTeam(m, TEAM_SHORTNAME);
-            //4 add member with admin permission
-            addAdminMemberOnBoard(m, personalBoardInTeam);
-            //put in local map just added personal board
-            membersPersonalBoards.put(m, personalBoardInTeam);
-            //get list of all boardLists in just added personal board
-            boardList = new TrelloTemplate(API_KEY,API_TOKEN).boundBoardOperations(personalBoardInTeam.getId()).getList();
-            IdList = boardList.get(0).getId(); // choose first
-            //5 list personal board one-to-one
-            //6 get all member task in list
-            //6.1 get list of all members card from all non-personal boards
-            //6.2 get all cards from all non-personal boards
-            // TODO: 14.01.2017 filter personal boards , now there are all cards in list
-            memberCards = new TrelloTemplate(API_KEY, API_TOKEN).boundMemberOperations(m.getUsername()).getCards();
-            //7 copy all cards in personal board
-            // TODO: 14.01.2017 to change null-parameters in method for right coping
-            // TODO: 14.01.2017 to add member on board if here was not there
-            for (Card memberCard : memberCards) {
-                createCard(getBoardName(
-                        memberCard.getIdBoard()),
+            /*тут нужен механизм проверки обновления данных в доске,
+            * возможно, будет хорошо работать с git'ом
+            *
+            *
+            * */
+
+            if (!boardExist) {
+                //3 create personal board
+                personalBoardInTeam = createPersonalBoardInTeam(m, TEAM_SHORTNAME);
+                //4 add member with admin permission
+                addAdminMemberOnBoard(m, personalBoardInTeam);
+                //put in local map just added personal board
+                membersPersonalBoards.put(m, personalBoardInTeam);
+                //get list of all boardLists in just added personal board
+                boardList = new TrelloTemplate(API_KEY, API_TOKEN).boundBoardOperations(personalBoardInTeam.getId()).getList();
+                IdList = boardList.get(0).getId(); // choose first
+                //5 list personal board one-to-one
+                //6 get all member task in list
+                //6.1 get list of all members card from all non-personal boards
+                //6.2 get all cards from all non-personal boards
+                // TODO: 14.01.2017 filter personal boards , now there are all cards in list
+                memberCards = new TrelloTemplate(API_KEY, API_TOKEN).boundMemberOperations(m.getUsername()).getCards();
+                //7 copy all cards in personal board
+                // TODO: 14.01.2017 to change null-parameters in method for right coping
+                // TODO: 14.01.2017 to add member on board if here was not there
+                for (Card memberCard : memberCards) {
+                    createCard(getBoardName(
+                            memberCard.getIdBoard()),
                         /*personalBoardInTeam.getName(),*/
-                        IdList,
-                        memberCard.getName(),
-                        memberCard.getDesc(),
-                        "0",
-                        memberCard.getId());
+                            IdList,
+                            memberCard.getName(),
+                            memberCard.getDesc(),
+                            "0",
+                            memberCard.getId());
+                }
             }
             //7.1 // TODO: 14.01.2017 update card with PUT
             //8 observe all changes in personal and non-personal boards
@@ -86,6 +115,10 @@ public class TrelloHandler {
         */
     }
 
+    boolean boardIsExist(Board board) {
+        return true;
+    }
+
     private static void addAdminMemberOnBoard(Member m, Board board) {
         new TrelloTemplate(API_KEY, API_TOKEN).boundBoardOperations(board.getId()).addMemberOnBoard(m.getId(), "admin");
     }
@@ -96,6 +129,14 @@ public class TrelloHandler {
 
     private static List<Member> getTeamMembers(String teamIdOrShortName) {
         return new TrelloTemplate(API_KEY, API_TOKEN).boundOrganizationOperations(teamIdOrShortName).getMembers();
+    }
+
+    private static List<Board> getTeamBoards(String teamIdOrShortName) {
+        return new TrelloTemplate(API_KEY, API_TOKEN).boundOrganizationOperations(teamIdOrShortName).getBoards();
+    }
+
+    private static List<Board> getMemberBoards(String memberIdOrShortName, String filter) {
+        return new TrelloTemplate(API_KEY, API_TOKEN).boundMemberOperations(memberIdOrShortName).getBoards("open", filter);
     }
 
     private static Card getCardByPosition(int cardPosition) {

@@ -12,9 +12,11 @@ public class LabelNames {
     private String red;
     private String purple;
     private String blue;
+    private String Turquoise;
+    private String Lightgreen;
+    private String pink;
     private String sky;
     private String lime;
-    private String pink;
     private String black;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -64,6 +66,22 @@ public class LabelNames {
 
     public void setBlue(String blue) {
         this.blue = blue;
+    }
+
+    public String getTurquoise() {
+        return Turquoise;
+    }
+
+    public void setTurquoise(String turquoise) {
+        Turquoise = turquoise;
+    }
+
+    public String getLightgreen() {
+        return Lightgreen;
+    }
+
+    public void setLightgreen(String lightgreen) {
+        Lightgreen = lightgreen;
     }
 
     public String getSky() {
